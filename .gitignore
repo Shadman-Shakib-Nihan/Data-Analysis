@@ -1,3 +1,4 @@
+# Ignore RStudio and R environment files that should not be uploaded
 .Rproj.user
 .Rhistory
 .RData
