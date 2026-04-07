@@ -11,24 +11,17 @@ colSums(is.na(data))
 
 # Then load it
 
-
-<<<<<<< HEAD
 #view missing data task 1-----------------------------------------------------------------------------
-=======
-#view missing data task 1
->>>>>>> 9fede2048154252dc65709998f372ac10018eb95
+
 data[data == ""] <- NA
 data[data == " "] <- NA
 sum(is.na(data))
 colSums(is.na(data))
 
-<<<<<<< HEAD
 #Replace by Most Frequent / Average Value ---
 # For numeric columns, missing values are replaced by the Mean (Average).
 # For categorical columns, missing values are replaced by the Mode (Most Frequent).
 dataset_replaced <- data
-=======
-library(naniar)
 
 # Simple missing data visualization
 gg_miss_var(data)          # Bar plot per variable
@@ -40,7 +33,7 @@ vis_miss(data)             # Heatmap-style visualization
   # For numeric columns, missing values are replaced by the Mean (Average).
   # For categorical columns, missing values are replaced by the Mode (Most Frequent).
   dataset_replaced <- data
->>>>>>> 9fede2048154252dc65709998f372ac10018eb95
+
 
 # Helper function to calculate the mode (most frequent value)
 get_mode <- function(v) {
@@ -81,9 +74,6 @@ vis_miss(data)             # Heatmap-style visualization
 
 
 #Task 3: Detect and Handle Outliers-----------------------------------------------------------------------------
-
-
-
 
 
 # In this dataset, 'Age' is the primary numeric column where outliers may exist.
@@ -134,6 +124,9 @@ min(data$gross.income)
 
 max(data$Un)
 min(data$Unit.price)
+
+
+
 ## --- Task 4: Numeric to Categorical (Binning for Sales Data) ---
 
 # Create a copy of the dataset
@@ -205,4 +198,30 @@ if ("Gross_Income_Group" %in% colnames(dataset_converted)) {
   print(table(dataset_converted$Gross_Income_Group))
 }
 
-#_______-
+
+
+
+## Task 5: Normalization of Continuous Attributes
+
+# Apply Min-Max Normalization to the numeric columns in the cleaned dataset.
+# This scales each numeric feature to the range [0, 1].
+
+dataset_normalized <- dataset_converted
+
+cat("\n--- Task 5: Normalization ---\n")
+
+# --- Min-Max Normalization ---
+min_max_norm <- function(x) {
+  (x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE))
+}
+
+cat("Applying Min-Max Normalization to 'Unit.price'...\n")
+dataset_normalized$Unit.price_Normalized <- min_max_norm(dataset_normalized$Unit.price)
+
+# Verification
+cat("\nSummary of Normalized Unit.price (Min-Max):\n")
+print(summary(dataset_normalized$Unit.price_Normalized))
+
+# Sample comparison
+cat("\nSample of normalized results:\n")
+print(head(dataset_normalized[, c("Unit.price", "Unit.price_Normalized")]))
