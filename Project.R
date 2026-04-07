@@ -1,7 +1,16 @@
+
+# Install naniar package
+install.packages("naniar")
+
 #Load data
 
 data <- read.csv("SuperMarketD.csv")
 View(data)
+
+colSums(is.na(data))
+
+# Then load it
+
 
 #view missing data task 1
 data[data == ""] <- NA
@@ -9,6 +18,12 @@ data[data == " "] <- NA
 sum(is.na(data))
 colSums(is.na(data))
 
+library(naniar)
+
+# Simple missing data visualization
+gg_miss_var(data)          # Bar plot per variable
+gg_miss_upset(data)        # UpSet plot for missing combinations
+vis_miss(data)             # Heatmap-style visualization
 
 
  #Replace by Most Frequent / Average Value ---
