@@ -179,6 +179,7 @@ if ("Quantity_Group" %in% colnames(dataset_converted)) {
   cat("\nQuantity_Group:\n")
   print(table(dataset_converted$Quantity_Group))
 }
+#dd
 
 if ("Gross_Income_Group" %in% colnames(dataset_converted)) {
   cat("\nGross_Income_Group:\n")
