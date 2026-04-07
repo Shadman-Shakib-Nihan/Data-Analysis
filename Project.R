@@ -225,3 +225,6 @@ print(summary(dataset_normalized$Unit.price_Normalized))
 # Sample comparison
 cat("\nSample of normalized results:\n")
 print(head(dataset_normalized[, c("Unit.price", "Unit.price_Normalized")]))
+      
+
+## Task 6:
