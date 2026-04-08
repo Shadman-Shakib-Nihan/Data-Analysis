@@ -29,11 +29,6 @@ gg_miss_upset(data)        # UpSet plot for missing combinations
 vis_miss(data)             # Heatmap-style visualization
 
 
- #Replace by Most Frequent / Average Value ---
-  # For numeric columns, missing values are replaced by the Mean (Average).
-  # For categorical columns, missing values are replaced by the Mode (Most Frequent).
-  dataset_replaced <- data
-
 
 # Helper function to calculate the mode (most frequent value)
 get_mode <- function(v) {
@@ -130,7 +125,7 @@ min(data$Unit.price)
 ## --- Task 4: Numeric to Categorical (Binning for Sales Data) ---
 
 # Create a copy of the dataset
-dataset_converted <- dataset_outlier_handled  
+dataset_converted <- dataset_outlier_handled
 
 cat("\n--- Task 4: Binning for Unit.price, Quantity, gross.income ---\n")
 
@@ -225,6 +220,29 @@ print(summary(dataset_normalized$Unit.price_Normalized))
 # Sample comparison
 cat("\nSample of normalized results:\n")
 print(head(dataset_normalized[, c("Unit.price", "Unit.price_Normalized")]))
-      
 
-## Task 6:
+
+
+## Task 6: Handle Duplicate Rows
+
+# Finding and removing duplicate observations from the dataset.
+
+cat("\n--- Task 6: Handle Duplicate Rows ---\n")
+
+# Count number of duplicate rows
+duplicate_count <- sum(duplicated(dataset_normalized))
+cat("Number of duplicate rows found:", duplicate_count, "\n")
+
+# Show the duplicate rows (if any)
+if (duplicate_count > 0) {
+  cat("Duplicate rows detected. Removing duplicates...\n")
+  # Actually remove the duplicates
+  dataset_final <- dataset_normalized[!duplicated(dataset_normalized), ]
+} else {
+  cat("No duplicate rows found. Keeping dataset as is.\n")
+  dataset_final <- dataset_normalized
+}
+
+# Final Verification
+cat("Original Row Count:", nrow(dataset_normalized), "\n")
+cat("Final Row Count (After Removing Duplicates):", nrow(dataset_final), "\n")
