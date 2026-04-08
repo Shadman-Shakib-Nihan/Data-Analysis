@@ -999,3 +999,6 @@ Invoice ID,Branch,City,Customer type,Gender,Product line,Unit price,Quantity,Tax
 727-02-1313,Alex,Yangon,Member,Male,Food and beverages,31.84,1,1.592,33.432,2/9/2019,1:22:00 PM,Cash,31.84,4.761904762,1.592,7.7
 347-56-2442,Alex,Yangon,Normal,Male,Home and lifestyle,65.82,1,3.291,69.111,2/22/2019,3:33:00 PM,Cash,65.82,4.761904762,3.291,4.1
 849-09-3807,Alex,Yangon,Member,Female,Fashion accessories,88.34,7,30.919,649.299,2/18/2019,1:28:00 PM,Cash,618.38,4.761904762,30.919,6.6
+636-48-8204,Alex,Yangon,Member,Female,Electronic accessories,34.56,5,8.64,181.44,2/17/2019,11:15:00 AM,Ewallet,172.8,4.761904762,8.64,9.9
+549-59-1358,Alex,Yangon,Member,Female,Sports and travel,88.63,3,13.2945,279.1845,3/2/2019,5:36:00 PM,Ewallet,265.89,4.761904762,13.2945,6
+234-36-2483,Cairo,Mandalay,Normal,Male,Health and beauty,57.59,6,17.277,362.817,2/15/2019,1:51:00 PM,Cash,345.54,4.761904762,17.277,5.1

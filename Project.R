@@ -7,9 +7,9 @@ install.packages("naniar")
 data <- read.csv("SuperMarketD.csv")
 View(data)
 
-colSums(is.na(data))
 
 # Then load it
+
 
 
 
@@ -17,24 +17,20 @@ colSums(is.na(data))
 
 #view missing data task 1
 
+
+#view missing data task 1-----------------------------------------------------------------------------
+
 data[data == ""] <- NA
 data[data == " "] <- NA
 sum(is.na(data))
 colSums(is.na(data))
 
 
-#Replace by Most Frequent / Average Value ---
-# For numeric columns, missing values are replaced by the Mean (Average).
-# For categorical columns, missing values are replaced by the Mode (Most Frequent).
-dataset_replaced <- data
-
-
-
-
  #Replace by Most Frequent / Average Value ---
   # For numeric columns, missing values are replaced by the Mean (Average).
   # For categorical columns, missing values are replaced by the Mode (Most Frequent).
   dataset_replaced <- data
+
 
 
 # Helper function to calculate the mode (most frequent value)
@@ -76,9 +72,6 @@ vis_miss(data)             # Heatmap-style visualization
 
 
 #Task 3: Detect and Handle Outliers-----------------------------------------------------------------------------
-
-
-
 
 
 # In this dataset, 'Age' is the primary numeric column where outliers may exist.
@@ -129,10 +122,13 @@ min(data$gross.income)
 
 max(data$Un)
 min(data$Unit.price)
+
+
+
 ## --- Task 4: Numeric to Categorical (Binning for Sales Data) ---
 
 # Create a copy of the dataset
-dataset_converted <- dataset_outlier_handled  
+dataset_converted <- dataset_outlier_handled
 
 cat("\n--- Task 4: Binning for Unit.price, Quantity, gross.income ---\n")
 
@@ -200,4 +196,109 @@ if ("Gross_Income_Group" %in% colnames(dataset_converted)) {
   print(table(dataset_converted$Gross_Income_Group))
 }
 
-#_______-
+
+
+
+## Task 5: Normalization of Continuous Attributes
+
+# Apply Min-Max Normalization to the numeric columns in the cleaned dataset.
+# This scales each numeric feature to the range [0, 1].
+
+dataset_normalized <- dataset_converted
+
+cat("\n--- Task 5: Normalization ---\n")
+
+# --- Min-Max Normalization ---
+min_max_norm <- function(x) {
+  (x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE))
+}
+
+cat("Applying Min-Max Normalization to 'Unit.price'...\n")
+dataset_normalized$Unit.price_Normalized <- min_max_norm(dataset_normalized$Unit.price)
+
+# Verification
+cat("\nSummary of Normalized Unit.price (Min-Max):\n")
+print(summary(dataset_normalized$Unit.price_Normalized))
+
+# Sample comparison
+cat("\nSample of normalized results:\n")
+print(head(dataset_normalized[, c("Unit.price", "Unit.price_Normalized")]))
+
+
+
+## Task 6: Handle Duplicate Rows
+
+# Finding and removing duplicate observations from the dataset.
+
+cat("\n--- Task 6: Handle Duplicate Rows ---\n")
+
+# Count number of duplicate rows
+duplicate_count <- sum(duplicated(dataset_normalized))
+cat("Number of duplicate rows found:", duplicate_count, "\n")
+
+# Show the duplicate rows (if any)
+if (duplicate_count > 0) {
+  cat("Duplicate rows detected. Removing duplicates...\n")
+  # Actually remove the duplicates
+  dataset_final <- dataset_normalized[!duplicated(dataset_normalized), ]
+} else {
+  cat("No duplicate rows found. Keeping dataset as is.\n")
+  dataset_final <- dataset_normalized
+}
+
+# Final Verification
+cat("Original Row Count:", nrow(dataset_normalized), "\n")
+cat("Final Row Count (After Removing Duplicates):", nrow(dataset_final), "\n")
+
+
+## Task 7: Data Filtering Methods-----------------------------------------------------
+
+
+library(dplyr)
+
+cat("\n--- Customer Purchase Behavior Analysis (Extended) ---\n")
+
+# --- Step 1: Convert to factor (optional but clean) ---
+dataset_final$Gender <- as.factor(dataset_final$Gender)
+dataset_final$Product.line <- as.factor(dataset_final$Product.line)
+dataset_final$Quantity_Group <- as.factor(dataset_final$Quantity_Group)
+dataset_final$Payment <- as.factor(dataset_final$Payment)
+dataset_final$Unit_Price_Group <- as.factor(dataset_final$Unit_Price_Group)
+dataset_final$Gross_Income_Group <- as.factor(dataset_final$Gross_Income_Group)
+
+
+gender_product <- dataset_final %>%
+  group_by(Gender, Product.line) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  arrange(Gender, desc(count))
+
+cat("\nMost bought Product line per Gender:\n")
+print(gender_product)
+
+
+cat("\nTop buying pattern per Gender (including income level):\n")
+print(top_per_gender)
+
+
+cat("\n--- Total Gross Income Analysis by Product Line ---\n")
+
+# --- Step 1: Ensure gross.income is numeric ---
+dataset_final$gross.income <- as.numeric(as.character(dataset_final$gross.income))
+
+# --- Step 2: Calculate total gross income per Product.line ---
+income_by_product <- dataset_final %>%
+  group_by(Product.line) %>%
+  summarise(Total_Gross_Income = sum(gross.income, na.rm = TRUE), .groups = "drop") %>%
+  arrange(desc(Total_Gross_Income))
+
+# --- Step 3: Print sorted result ---
+cat("\nProduct lines ranked by Total Gross Income:\n")
+print(income_by_product)
+
+# --- Step 4 (Optional): Categorize into Low / Medium / High ---
+income_by_product$Income_Level <- cut(income_by_product$Total_Gross_Income,
+                                      breaks = 3,
+                                      labels = c("Low", "Medium", "High"))
+
+cat("\nProduct lines with Income Level classification:\n")
+print(income_by_product)
