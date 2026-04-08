@@ -12,35 +12,30 @@ colSums(is.na(data))
 # Then load it
 
 
-<<<<<<< HEAD
+
 #view missing data task 1-----------------------------------------------------------------------------
-=======
+
 #view missing data task 1
->>>>>>> 9fede2048154252dc65709998f372ac10018eb95
+
 data[data == ""] <- NA
 data[data == " "] <- NA
 sum(is.na(data))
 colSums(is.na(data))
 
-<<<<<<< HEAD
+
 #Replace by Most Frequent / Average Value ---
 # For numeric columns, missing values are replaced by the Mean (Average).
 # For categorical columns, missing values are replaced by the Mode (Most Frequent).
 dataset_replaced <- data
-=======
-library(naniar)
 
-# Simple missing data visualization
-gg_miss_var(data)          # Bar plot per variable
-gg_miss_upset(data)        # UpSet plot for missing combinations
-vis_miss(data)             # Heatmap-style visualization
+
 
 
  #Replace by Most Frequent / Average Value ---
   # For numeric columns, missing values are replaced by the Mean (Average).
   # For categorical columns, missing values are replaced by the Mode (Most Frequent).
   dataset_replaced <- data
->>>>>>> 9fede2048154252dc65709998f372ac10018eb95
+
 
 # Helper function to calculate the mode (most frequent value)
 get_mode <- function(v) {
